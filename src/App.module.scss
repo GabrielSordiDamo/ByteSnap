@@ -1,0 +1,15 @@
+.wrapper {
+  width: 100vw;
+  max-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--dark);
+    color: var(--light);
+  }
+}

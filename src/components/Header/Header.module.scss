@@ -1,0 +1,33 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--primary);
+  color: var(--light);
+
+  .headerLogo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .appTitle {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+
+  .headerInfo {
+    display: flex;
+    gap: 1rem;
+
+    a {
+      color: var(--light);
+    }
+  }
+}
