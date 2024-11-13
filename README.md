@@ -1,4 +1,4 @@
-[![Git Hub Pages Deploy](https://github.com/GabrielSordiDamo/ByteSnap/actions/workflows/deploy.yml/badge.svg)](https://github.com/GabrielSordiDamo/ByteSnap/actions/workflows/deploy.yml)
+[![Git Hub Pages Deploy](https://github.com/GabrielSordiDamo/ByteSnap/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/GabrielSordiDamo/ByteSnap/actions/workflows/deploy.yml)
 
 [Web App](https://gabrielsordidamo.github.io/ByteSnap/)
 # Byte Snap
