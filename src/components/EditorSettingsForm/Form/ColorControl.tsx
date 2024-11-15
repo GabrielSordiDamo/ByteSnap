@@ -2,7 +2,7 @@ import { FieldError, UseFormRegister } from "react-hook-form";
 import { EditorSettingFormSchema } from "@/components/EditorSettingsForm/EditorSettingsForm.tsx";
 import { useId } from "react";
 import { BsPaintBucket } from "react-icons/bs";
-
+import styles from "./ColorControl.module.scss";
 interface ColorControlProps {
   register: UseFormRegister<EditorSettingFormSchema>;
   error?: FieldError;
@@ -29,7 +29,7 @@ const ColorControl = ({ register, error, className }: ColorControlProps) => {
         <div className="form-control d-flex justify-content-center ">
           <input
             type="color"
-            className={`form-range  ${error && "is-invalid"}`}
+            className={`form-range  ${error && "is-invalid"} ${styles.color}`}
             {...register("backgroundColor")}
           />
         </div>
