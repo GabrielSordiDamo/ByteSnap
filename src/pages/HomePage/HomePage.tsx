@@ -3,44 +3,18 @@ import EditorSettingsForm, {
   EditorSettingFormSchema,
   editorSettingsFormSchema,
 } from "@/components/EditorSettingsForm/EditorSettingsForm.tsx";
-import {
-  DEFAULT_EDITOR_BG_COLOR,
-  DEFAULT_EDITOR_PADDING,
-  MAX_EDITOR_WIDTH,
-} from "@/components/EditorSettingsForm/EdditorSettings.constants.tsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import html2canvas from "html2canvas";
-import { useCallback, useEffect, useId } from "react";
+import { useEffect, useId } from "react";
 import PrismEditor from "@/components/PrismEditor/PrimsEditor.tsx";
-import { useToast } from "@/contexts/Toast/ToastContext.tsx";
-import { ToastType } from "@/components/Toast/ToastType.enum.tsx";
+import { loadDefaultEditorValues } from "@/pages/HomePage/HomePage.utils.ts";
+import { useExport } from "@/components/hooks/UseExport/UseExport.tsx";
+import { useCopy } from "@/components/hooks/UseCopy/UseCopy.tsx";
 
 const HomePage = () => {
-  const loadDefaultEditorValues = () => {
-    const storedValues = JSON.parse(
-      localStorage.getItem("codeEditorConfigs") ?? "{}",
-    );
-
-    const defaultValues = {
-      language: "python",
-      theme: "default",
-      background: "off",
-      backgroundColor: DEFAULT_EDITOR_BG_COLOR,
-      ...storedValues,
-    };
-
-    return {
-      ...defaultValues,
-      width: MAX_EDITOR_WIDTH / 2,
-      paddingY: DEFAULT_EDITOR_PADDING,
-      paddingX: DEFAULT_EDITOR_PADDING,
-      fontSize: 14,
-    };
-  };
-
-  const { showToast } = useToast();
   const id = useId();
+  const exportTo = useExport(id);
+  const copy = useCopy(id);
   const editorForm = useForm<EditorSettingFormSchema>({
     resolver: zodResolver(editorSettingsFormSchema),
     mode: "onChange",
@@ -56,56 +30,6 @@ const HomePage = () => {
     });
   }, []);
 
-  const exportTo = (format: string) => {
-    const editor = document.getElementById(id);
-    if (!editor) return;
-
-    html2canvas(editor, { backgroundColor: "transparent" }).then((canvas) => {
-      try {
-        const image = canvas.toDataURL("image/" + format);
-        const link = document.createElement("a");
-        link.href = image;
-        link.download = `snapshot.${format.toLowerCase()}`;
-        link.click();
-      } catch (e) {
-        showToast({
-          title: "Failed",
-          message: "Failed to export image",
-          type: ToastType.DANGER,
-        });
-      }
-    });
-  };
-
-  const copy = useCallback(() => {
-    const editor = document.getElementById(id);
-    if (!editor) return;
-
-    html2canvas(editor, { backgroundColor: "transparent" }).then((canvas) => {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const item = new ClipboardItem({ "image/png": blob });
-          navigator.clipboard.write([item]).then(
-            () => {
-              showToast({
-                title: "Success",
-                message: "Image copied to clipboard",
-                type: ToastType.SUCCESS,
-              });
-            },
-            () => {
-              showToast({
-                title: "Failed",
-                message: "Failed to copy image to clipboard",
-                type: ToastType.DANGER,
-              });
-            },
-          );
-        }
-      }, "image/png");
-    });
-  }, []);
-
   const formValues = editorForm.watch();
   return (
     <div className={styles.wrapper}>
@@ -116,7 +40,6 @@ const HomePage = () => {
         handleCopy={copy}
         handleExport={exportTo}
       ></EditorSettingsForm>
-
       <div
         id={id}
         className={styles.editor}
