@@ -46,6 +46,10 @@ const PrismEditor = ({
       const computedStyle = window.getComputedStyle(pre);
       editorWrapper.style.backgroundColor = computedStyle.backgroundColor;
       editorWrapper.style.backgroundImage = computedStyle.backgroundImage;
+    } else {
+      setTimeout(() => {
+        updateBackgroundColor();
+      }, PRISM_RENDERING_TIMEOUT);
     }
   };
   const updateFontSize = () => {
