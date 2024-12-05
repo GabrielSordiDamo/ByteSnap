@@ -16,28 +16,36 @@ export const useCopy = (id: string) => {
     const editor = document.getElementById(id);
     if (!editor) return;
 
-    html2canvas(editor, { backgroundColor: "transparent" }).then((canvas) => {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const item = new ClipboardItem({ "image/png": blob });
-          navigator.clipboard.write([item]).then(
-            () => {
-              showToast({
-                title: "Success",
-                message: "Image copied to clipboard",
-                type: ToastType.SUCCESS,
-              });
-            },
-            () => {
-              showToast({
-                title: "Failed",
-                message: "Clipboard API is not fully supported on this device",
-                type: ToastType.DANGER,
-              });
-            },
-          );
-        }
-      }, "image/png");
+    html2canvas(editor, {
+      backgroundColor: "transparent",
+      scale: 2,
+    }).then((canvas) => {
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const item = new ClipboardItem({ "image/png": blob });
+            navigator.clipboard.write([item]).then(
+              () => {
+                showToast({
+                  title: "Success",
+                  message: "Image copied to clipboard",
+                  type: ToastType.SUCCESS,
+                });
+              },
+              () => {
+                showToast({
+                  title: "Failed",
+                  message:
+                    "Clipboard API is not fully supported on this device",
+                  type: ToastType.DANGER,
+                });
+              },
+            );
+          }
+        },
+        "image/png",
+        1,
+      );
     });
   };
 };

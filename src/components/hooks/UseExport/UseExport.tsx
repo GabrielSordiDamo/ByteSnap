@@ -43,26 +43,30 @@ export const useExport = (id: string) => {
     const editor = document.getElementById(id);
     if (!editor) return;
 
-    html2canvas(editor, { backgroundColor: "transparent" }).then((canvas) => {
-      try {
-        const image = canvas.toDataURL(`image/${format}`);
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        if (isMobile) {
-          imageRef.current = image;
-          openMobileAdaptedModal();
-        } else {
-          const link = document.createElement("a");
-          link.href = image;
-          link.download = `snapshot.${format.toLowerCase()}`;
-          link.click();
+    html2canvas(editor, { backgroundColor: "transparent", scale: 2 }).then(
+      (canvas) => {
+        try {
+          const image = canvas.toDataURL(`image/${format}`, 1);
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(
+            navigator.userAgent,
+          );
+          if (isMobile) {
+            imageRef.current = image;
+            openMobileAdaptedModal();
+          } else {
+            const link = document.createElement("a");
+            link.href = image;
+            link.download = `snapshot.${format.toLowerCase()}`;
+            link.click();
+          }
+        } catch (e) {
+          showToast({
+            title: "Failed",
+            message: "Failed to export image",
+            type: ToastType.DANGER,
+          });
         }
-      } catch (e) {
-        showToast({
-          title: "Failed",
-          message: "Failed to export image",
-          type: ToastType.DANGER,
-        });
-      }
-    });
+      },
+    );
   };
 };
